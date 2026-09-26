@@ -13,8 +13,10 @@ Ein vollständiger, detailreicher und liebevoll gestalteter **Plants vs. Zombies
   - **Level 1-2 (Sonnige Aussichten):** 3 Reihen, Freischaltung der Sonnenblume zur Sonnenproduktion.
   - **Level 1-3 (Harte Nüsse):** Vollständiges 5x9-Gartenfeld, Freischaltung der Wallnuss, Einführung des Stabhochspringers.
   - **Level 1-4 (Explosive Überraschung):** Freischaltung der Kirschbombe (3x3-Sprengung), Eimer-Zombies tauchen auf.
-  - **Level 1-5 (Der Eisige Ansturm):** Freischaltung der Schneekanone (Verlangsamung der Zombies) und Kartoffelmine.
-  - **Level 2-1 (Nächtlicher Schrecken):** Nacht-Szenario mit Mondschein, Glühwürmchen und wütenden Zeitungs-Zombies!
+  - **Level 1-5 (Doppelte Feuerkraft):** Großangriff mit Flaggen-Zombies, Freischaltung der Doppelerbse und Schneekanone.
+  - **Level 2-1 (Nächtlicher Schrecken):** Nacht-Szenario mit Mondschein, Glühwürmchen, Pustepilzen, wütenden Zeitungs-Zombies und Fliegengittern (Freischaltung: Rauchpilz).
+  - **Level 2-2 (Tanz auf dem Rasen):** Disco-Zombies beschwören Tänzer-Formationen, Football-Zombies stürmen heran (Freischaltung: Schnapper).
+  - **Level 2-3 (Die Kolosse erwachen):** Finale Nacht-Schlacht mit allen Spezialpflanzen (Kartoffelmine, Riesenkürbis, Chili) gegen riesige Gargantuar-Kolosse!
 - **Level-Fortschritt & Freischaltungen:** Am Ende jedes Levels präsentiert ein Siegesbildschirm die neu freigeschaltete Pflanze mit Werten und Beschreibung.
 - **Rasenmäher:** Zuverlässige letzte Verteidigungslinie auf jeder Reihe, die bei Zombie-Kontakt losrast und die gesamte Reihe niedermäht.
 - **Wellen-Warnung:** Dynamische Alarm-Banner kündigen große Zombie-Wellen an (*„EINE RIESIGE WELLE NÄHERT SICH!“*).
@@ -34,7 +36,7 @@ Ein vollständiger, detailreicher und liebevoll gestalteter **Plants vs. Zombies
 ### 4. 📖 Pflanzen- & Zombie-Almanach (Lexikon)
 
 - Vollständiges Nachschlagewerk für alle Einheiten.
-- Interaktive Auswahl aller 6 Pflanzen und aller 6 Zombie-Klassen.
+- Interaktive Auswahl aller **12 Pflanzen** und aller **11 Zombie-Klassen**.
 - Detailansicht mit lebendigen Animationen, Attributen (Kosten, KP, Abklingzeit, Tempo, Schaden) sowie humorvollen deutschen Beschreibungen und Geschichten.
 
 ### 5. 🖥️ Vollbild- und Fenstermodus (F11)
@@ -46,27 +48,38 @@ Ein vollständiger, detailreicher und liebevoll gestalteter **Plants vs. Zombies
 
 ## 🌿 Einheiten-Übersicht
 
-### Pflanzen
+### Pflanzen (12 Arten)
 
-| Pflanze | Sonnen | Aufladung | KP | Beschreibung |
+| Pflanze | Sonnen | Aufladung | KP | Schaden / Effekt | Beschreibung |
+| --- | --- | --- | --- | --- | --- |
+| **Erbsenkanone** | 100 | 7.5s | 300 | 20 Schaden / Schuss | Verschießt geradeaus Erbsen auf herannahende Zombies. |
+| **Sonnenblume** | 50 | 7.5s | 300 | +25 Sonnen regelmäßig | Produziert regelmäßig zusätzliche Sonnenenergie für die Verteidigung. |
+| **Wallnuss** | 50 | 25.0s | 4000 | Massive Barriere | Hält Zombies dank extrem robuster Schale sehr lange auf (2 sichtbare Schadensrisse). |
+| **Kirschbombe** | 150 | 30.0s | 300 | 1800 Flächenschaden | Explodiert nach kurzer Zündschnur im 3x3-Bereich und pulverisiert Zombies. |
+| **Doppelerbse** | 200 | 7.5s | 300 | 2x 20 Schaden / Salve | Feuert zwei Erbsen in rascher Folge ab und verdoppelt den Beschuss. |
+| **Schneekanone** | 175 | 7.5s | 300 | 20 Schaden + Frost | Feuert Eis-Erbsen, die Zombies um 50% verlangsamen und blau einfärben. |
+| **Schnapper** | 150 | 7.5s | 400 | Sofort-Kill (1 Zombie) | Verschlingt einen Zombie auf einen Happs ganz; braucht ~40s zum Kauen. |
+| **Kartoffelmine** | 25 | 25.0s | 300 | 1800 Kontaktschaden | Gräbt sich ein, wird nach 14s scharf und explodiert bei Tritt (*SPUDOW!*). |
+| **Riesenkürbis** | 50 | 25.0s | 300 | 1800 Schlagschaden | Hüpft bei Annäherung hoch und zerquetscht herannahende Zombies auf seinem Feld. |
+| **Chili** | 125 | 30.0s | 300 | 1800 Reihenschaden | Entfacht eine gewaltige Feuerwand, die eine komplette Reihe auslöscht. |
+| **Pustepilz** | 0 | 7.5s | 200 | 20 Sporenschaden | Kostenloser Nacht-Pilz für schnelle Abwehr; Reichweite bis zu 3 Feldern. |
+| **Rauchpilz** | 75 | 7.5s | 300 | 20 Durchdringung | Verschießt eine Sporenwolke (4 Felder), die Fliegengitter und Schilde ignoriert. |
+
+### Zombies (11 Klassen)
+
+| Zombie | KP | Tempo | Schaden | Besonderheit |
 | --- | --- | --- | --- | --- |
-| **Erbsenkanone** | 100 | 7.5s | 300 | Verschießt geradeaus Erbsen auf herannahende Zombies. |
-| **Sonnenblume** | 50 | 7.5s | 300 | Produziert regelmäßig zusätzliche Sonnen (+25). |
-| **Wallnuss** | 50 | 25.0s | 4000 | Massive defensive Mauer mit 2 sichtbaren Schadensrissen. |
-| **Kirschbombe** | 150 | 30.0s | 300 | Explodiert nach kurzer Zündschnur im 3x3-Bereich (1800 Schaden). |
-| **Schneekanone** | 175 | 7.5s | 300 | Feuert Eis-Erbsen, die Zombies um 50% verlangsamen und blau färben. |
-| **Kartoffelmine** | 25 | 25.0s | 300 | Gräbt sich ein, schaltet sich nach 14s scharf und explodiert bei Tritt (*SPUDOW!*). |
-
-### Zombies
-
-| Zombie | KP | Tempo | Besonderheit |
-| --- | --- | --- | --- |
-| **Normaler Zombie** | 200 | 22 px/s | Der klassische Vorgarten-Zombie im zerschlissenen Anzug. |
-| **Pylonen-Zombie** | 560 | 22 px/s | Die Straßenpylone absorbiert doppelten Erbsenbeschuss. |
-| **Eimer-Zombie** | 1300 | 22 px/s | Extrem robuster Metall-Eimer als Kopfschutz. |
-| **Flaggen-Zombie** | 200 | 32 px/s | Schneller Läufer, der riesige Wellen anführt. |
-| **Stabhochspringer** | 500 | 55 px/s | Sprintet heran und überspringt mit Eleganz die erste Pflanze. |
-| **Zeitungs-Zombie** | 350 | 18 / 62 px/s | Sobald seine Sonntagszeitung zerstört wird, rast er vor Wut los! |
+| **Normaler Zombie** | 200 | 22 px/s | 100 DPS | Der klassische Vorgarten-Zombie im zerschlissenen Anzug. |
+| **Pylonen-Zombie** | 560 | 22 px/s | 100 DPS | Die Straßenpylone auf dem Kopf absorbiert doppelten Erbsenbeschuss. |
+| **Eimer-Zombie** | 1300 | 22 px/s | 100 DPS | Extrem robuster feuerverzinkter Metalleimer als massiver Kopfschutz. |
+| **Flaggen-Zombie** | 200 | 32 px/s | 100 DPS | Schneller Läufer mit Gehirn-Fahne, der riesige Wellen ankündigt und anführt. |
+| **Stabhochspringer** | 500 | 55 px/s / 22 px/s | 100 DPS | Sprintet rasant heran und überspringt mit dem Stab die erste Pflanze im Weg. |
+| **Zeitungs-Zombie** | 350 | 18 px/s / 62 px/s | 100 DPS | Liest friedlich Zeitung; wird seine Zeitung zerstört, rast er vor Wut los! |
+| **Fliegengitter-Zombie** | 1000 | 20 px/s | 100 DPS | Trägt eine Fliegengittertür als Schutzschild gegen frontale Projektile. |
+| **Football-Zombie** | 1600 | 44 px/s | 100 DPS | Zäher Athlet mit hochgradig panzerndem Helm und extrem hohem Lauftempo. |
+| **Disco-Zombie** | 450 | 20 px/s | 100 DPS | Tanzt über den Rasen und beschwört regelmäßig 4 Backup-Tänzer aus dem Boden. |
+| **Backup-Tänzer** | 200 | 20 px/s | 100 DPS | Folgt der Choreografie des Disco-Zombies und schützt ihn in Viererformation. |
+| **Gargantuar** | 3000 | 14 px/s | 300 DPS | Gigantischer Riese; zerschmettert Pflanzen mit einem Telegrafenmast mit einem Schlag! |
 
 ---
 
