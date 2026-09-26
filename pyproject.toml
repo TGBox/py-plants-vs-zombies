@@ -1,7 +1,7 @@
 [project]
 name = "py-plants-vs-zombies"
 version = "0.1.0"
-description = "Add your description here"
+description = "A python game adaptation of plants vs zombies."
 readme = "README.md"
 authors = [
     { name = "Daniel Rösch", email = "droesch91@gmail.com" }
@@ -11,6 +11,7 @@ dependencies = []
 
 [project.scripts]
 py-plants-vs-zombies = "py_plants_vs_zombies:main"
+main = "py_plants_vs_zombies:main"
 
 [build-system]
 requires = ["uv_build>=0.12.6,<0.13.0"]

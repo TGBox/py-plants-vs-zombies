@@ -3,3 +3,5 @@ venv
 .venv
 dist
 build
+savegame*.json
+*.pyc
