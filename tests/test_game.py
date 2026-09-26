@@ -335,6 +335,53 @@ def test_scenes_and_simulation():
     print("  -> Scene simulation loop OK!")
 
 
+def test_lawn_mower_and_game_over():
+    print("Testing lawn mower trigger and game over breach detection...")
+    from config import GRID_START_X
+
+    # 1. Verify 15 seconds initial wave delay
+    wm = WaveManager(total_waves=5, active_rows=[0, 1, 2, 3, 4], allowed_zombie_types=["normal"])
+    assert wm.wave_delay == 15.0, f"Expected 15.0s wave delay, got {wm.wave_delay}s"
+
+    save_mgr = SaveManager("test_mower_save.json")
+    sm = SceneManager(save_mgr)
+    game = GameScene(sm)
+    game.on_enter(level_num=1, is_endless=False)
+
+    # 2. Test lawn mower activation when zombie reaches GRID_START_X - 10
+    assert len(game.lawn_mowers) > 0
+    active_row = game.lawn_mowers[0].row
+    row_mower = [m for m in game.lawn_mowers if m.row == active_row][0]
+    assert not row_mower.is_active
+
+    test_z = NormalZombie(row=active_row, start_x=GRID_START_X - 12.0)
+    game.zombies.append(test_z)
+
+    # Update frame: mower should activate
+    game.update(0.016, (0, 0))
+    assert row_mower.is_active, "Lawn mower failed to activate when zombie reached row end!"
+
+    # Run frames until mower clears zombie
+    for _ in range(60):
+        game.update(0.016, (0, 0))
+    assert not test_z.is_alive, "Lawn mower failed to crush zombie!"
+
+    # 3. Test game over when another zombie breaches without mower
+    # Remove all lawn mowers in that row
+    game.lawn_mowers = [m for m in game.lawn_mowers if m.row != active_row]
+    breaching_z = NormalZombie(row=active_row, start_x=GRID_START_X - 75.0)
+    game.zombies.append(breaching_z)
+
+    assert not game.is_game_over
+    game.update(0.016, (0, 0))
+    assert game.is_game_over, "Game Over failed to trigger when zombie breached the house!"
+
+    if os.path.exists("test_mower_save.json"):
+        os.remove("test_mower_save.json")
+
+    print("  -> Lawn Mower activation & Game Over breach OK!")
+
+
 def main():
     test_assets_and_tinting()
     test_savegame()
@@ -342,6 +389,7 @@ def main():
     test_combat_mechanics()
     test_bowling_mechanics()
     test_scenes_and_simulation()
+    test_lawn_mower_and_game_over()
     print("\nALL VERIFICATION TESTS PASSED SUCCESSFULLY! (100% OK)")
 
 

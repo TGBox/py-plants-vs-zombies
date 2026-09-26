@@ -42,7 +42,7 @@ class WaveManager:
 
         self.current_wave = 0
         self.wave_timer = 0.0
-        self.wave_delay = 24.0  # Generous grace period so player can build sunflowers!
+        self.wave_delay = 15.0  # 15 seconds until the first zombie wave arrives
         self.is_wave_active = False
 
         self.huge_wave_banner_timer = 0.0

@@ -384,8 +384,6 @@ class GameScene(Scene):
         for z in self.zombies:
             plants_in_row = self.grid.get_plants_in_row(z.row)
             z.update(dt, plants_in_row, self.particle_sys, spawned_zombies_list=new_dancers)
-        if new_dancers:
-            self.zombies.extend(new_dancers)
 
             # Check Lawn Mower activation
             if z.x <= (GRID_START_X - 10):
@@ -410,6 +408,9 @@ class GameScene(Scene):
                         self.wave_mgr.zombies_killed_total,
                     )
                 return
+
+        if new_dancers:
+            self.zombies.extend(new_dancers)
 
         # 7. Update Lawn Mowers
         for mower in self.lawn_mowers:
