@@ -25,8 +25,8 @@ class MenuScene(Scene):
         self.zombie_img = self.assets.get_image("zombies/zombie_normal")
         self.conehead_img = self.assets.get_image("zombies/zombie_conehead")
 
-        btn_w, btn_h = 320, 56
-        bx = 120
+        btn_w, btn_h = 350, 56
+        bx = 100
         start_y = 230
         spacing = 70
 
@@ -48,14 +48,14 @@ class MenuScene(Scene):
             (bx, start_y + spacing * 2, btn_w, btn_h),
             "Wallnuss-Bowling",
             self.on_start_bowling,
-            "large",
+            "medium",
             "wood",
         )
         self.btn_almanac = Button(
             (bx, start_y + spacing * 3, btn_w, btn_h),
             "Almanach (Lexikon)",
             self.on_open_almanac,
-            "large",
+            "medium",
             "gray",
         )
         self.btn_fullscreen = Button(

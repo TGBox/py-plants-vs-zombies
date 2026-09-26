@@ -463,6 +463,193 @@ def generate_potato_mine_stages():
     # Smile
     draw_a.arc((42, 58, 54, 68), start=10, end=170, fill=(70, 40, 15, 255), width=3)
     img_a.save("assets/plants/potato_mine_armed.png")
+    # Save standard canonical potato_mine.png so sprite lookups succeed
+    img_a.save("assets/plants/potato_mine.png")
+
+
+def generate_repeater():
+    img = Image.new("RGBA", (96, 96), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+
+    # Base stem & leaves
+    draw.ellipse((28, 74, 52, 88), fill=(35, 120, 30, 255), outline=(15, 70, 12, 255), width=2)
+    draw.ellipse((44, 74, 68, 88), fill=(45, 140, 35, 255), outline=(15, 70, 12, 255), width=2)
+    draw.line([(48, 55), (46, 78)], fill=(40, 130, 30, 255), width=9)
+
+    # Twin leaves on back of head (repeater signature)
+    for lx, ly in [(20, 30), (14, 44)]:
+        draw.polygon([(lx + 14, ly), (lx - 8, ly - 4), (lx + 2, ly + 10)],
+                     fill=(50, 170, 35, 255), outline=(20, 85, 15, 255), width=2)
+
+    # Darker Green Head with eyebrow ridge
+    hx, hy, hr = 46, 42, 24
+    draw.ellipse((hx - hr, hy - hr, hx + hr, hy + hr), fill=(80, 185, 35, 255), outline=(25, 95, 20, 255), width=3)
+    # Head highlight
+    draw.ellipse((hx - hr + 7, hy - hr + 6, hx - 4, hy - 4), fill=(140, 235, 80, 255))
+
+    # Dark green headband
+    draw.arc((hx - hr + 4, hy - hr + 10, hx + hr - 4, hy + 2), start=170, end=350, fill=(30, 90, 20, 255), width=4)
+
+    # Snout / Cannon tube (facing right)
+    draw.polygon([(hx + 12, hy - 11), (hx + 38, hy - 16), (hx + 42, hy + 12), (hx + 14, hy + 11)],
+                 fill=(70, 175, 30, 255), outline=(25, 95, 20, 255), width=3)
+    draw.ellipse((hx + 35, hy - 16, hx + 44, hy + 12), fill=(20, 65, 15, 255), outline=(10, 45, 10, 255), width=2)
+
+    # Fierce Eyes
+    draw.line([(hx, hy - 16), (hx + 18, hy - 12)], fill=(20, 70, 15, 255), width=3)
+    draw.ellipse((hx + 2, hy - 14, hx + 18, hy + 4), fill=(255, 255, 255, 255), outline=(20, 80, 20, 255), width=2)
+    draw.ellipse((hx + 8, hy - 10, hx + 16, hy), fill=(20, 20, 20, 255))
+    draw.ellipse((hx + 12, hy - 8, hx + 15, hy - 4), fill=(255, 255, 255, 255))
+
+    draw.ellipse((hx - 14, hy - 14, hx, hy + 3), fill=(255, 255, 255, 255), outline=(20, 80, 20, 255), width=2)
+    draw.ellipse((hx - 8, hy - 10, hx - 1, hy), fill=(20, 20, 20, 255))
+
+    img.save("assets/plants/repeater.png")
+
+
+def generate_chomper():
+    img = Image.new("RGBA", (96, 96), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+
+    # Stem and spiky leafy base
+    draw.line([(48, 55), (46, 82)], fill=(45, 140, 35, 255), width=10)
+    draw.polygon([(46, 80), (22, 88), (40, 72)], fill=(40, 150, 30, 255), outline=(20, 80, 15, 255), width=2)
+    draw.polygon([(48, 80), (74, 88), (56, 72)], fill=(40, 150, 30, 255), outline=(20, 80, 15, 255), width=2)
+
+    # Big purple carnivorous head (upper and lower jaws open)
+    # Upper jaw
+    draw.chord((26, 16, 86, 60), start=180, end=360, fill=(150, 45, 175, 255), outline=(75, 15, 95, 255), width=3)
+    # Lower jaw
+    draw.chord((26, 44, 86, 76), start=0, end=180, fill=(130, 35, 155, 255), outline=(75, 15, 95, 255), width=3)
+
+    # Deep dark mouth cavity
+    draw.ellipse((32, 34, 80, 56), fill=(45, 10, 55, 255))
+
+    # Sharp white teeth!
+    # Top teeth
+    for tx in [38, 48, 58, 68]:
+        draw.polygon([(tx, 36), (tx + 5, 46), (tx + 9, 36)], fill=(255, 255, 240, 255), outline=(90, 80, 80, 255), width=1)
+    # Bottom teeth
+    for tx in [42, 52, 62]:
+        draw.polygon([(tx, 54), (tx + 5, 44), (tx + 9, 54)], fill=(255, 255, 240, 255), outline=(90, 80, 80, 255), width=1)
+
+    # Derpy little pink eyes on top
+    draw.ellipse((42, 14, 52, 26), fill=(255, 255, 255, 255), outline=(75, 15, 95, 255), width=2)
+    draw.ellipse((46, 18, 50, 23), fill=(20, 20, 20, 255))
+    draw.ellipse((58, 14, 68, 26), fill=(255, 255, 255, 255), outline=(75, 15, 95, 255), width=2)
+    draw.ellipse((62, 18, 66, 23), fill=(20, 20, 20, 255))
+
+    img.save("assets/plants/chomper.png")
+
+
+def generate_jalapeno():
+    img = Image.new("RGBA", (96, 96), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+
+    # Fiery flame hair at top
+    draw.polygon([(48, 4), (40, 22), (48, 16), (56, 22)], fill=(255, 140, 20, 255), outline=(220, 60, 10, 255), width=2)
+    draw.polygon([(48, 10), (44, 20), (52, 20)], fill=(255, 240, 80, 255))
+
+    # Bright Red Pepper Body (curved tapering chili)
+    draw.polygon([
+        (40, 20), (56, 20), (62, 40), (58, 68), (52, 84), (48, 88), (44, 84), (36, 68), (34, 40)
+    ], fill=(235, 25, 25, 255), outline=(130, 10, 10, 255), width=3)
+    # Highlight
+    draw.line([(40, 26), (40, 64)], fill=(255, 110, 110, 255), width=3)
+
+    # Furious Angry Face
+    # Unibrow angled downwards
+    draw.line([(36, 32), (48, 40), (60, 32)], fill=(20, 5, 5, 255), width=4)
+    # Yellow furious eyes
+    draw.ellipse((38, 36, 46, 46), fill=(255, 240, 40, 255), outline=(30, 10, 10, 255), width=2)
+    draw.ellipse((42, 39, 45, 43), fill=(20, 5, 5, 255))
+    draw.ellipse((50, 36, 58, 46), fill=(255, 240, 40, 255), outline=(30, 10, 10, 255), width=2)
+    draw.ellipse((51, 39, 54, 43), fill=(20, 5, 5, 255))
+    # Teeth gritting grimace
+    draw.rectangle((40, 52, 56, 60), fill=(245, 245, 240, 255), outline=(30, 5, 5, 255), width=2)
+    draw.line([(48, 52), (48, 60)], fill=(30, 5, 5, 255), width=2)
+
+    img.save("assets/plants/jalapeno.png")
+
+
+def generate_squash():
+    img = Image.new("RGBA", (96, 96), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+
+    # Little brown stem on head
+    draw.polygon([(46, 12), (48, 4), (54, 6), (50, 14)], fill=(120, 80, 40, 255), outline=(60, 40, 20, 255), width=2)
+
+    # Pear/bell shaped Squash body (green with ridges)
+    draw.ellipse((30, 14, 66, 52), fill=(120, 195, 60, 255), outline=(40, 95, 20, 255), width=3)
+    draw.ellipse((22, 38, 74, 86), fill=(110, 185, 55, 255), outline=(40, 95, 20, 255), width=3)
+
+    # Shading ridges
+    draw.arc((32, 20, 64, 82), start=80, end=280, fill=(75, 140, 35, 255), width=3)
+    draw.arc((32, 20, 64, 82), start=260, end=460, fill=(75, 140, 35, 255), width=3)
+
+    # Grumpy intense gaze
+    # Heavy brow
+    draw.line([(32, 36), (48, 44), (64, 36)], fill=(30, 65, 15, 255), width=5)
+    # Eyes looking down at zombie
+    draw.ellipse((34, 42, 46, 54), fill=(255, 255, 255, 255), outline=(30, 65, 15, 255), width=2)
+    draw.ellipse((40, 47, 45, 52), fill=(20, 20, 20, 255))
+    draw.ellipse((50, 42, 62, 54), fill=(255, 255, 255, 255), outline=(30, 65, 15, 255), width=2)
+    draw.ellipse((51, 47, 56, 52), fill=(20, 20, 20, 255))
+
+    # Frown
+    draw.arc((38, 62, 58, 76), start=200, end=340, fill=(35, 75, 15, 255), width=4)
+
+    img.save("assets/plants/squash.png")
+
+
+def generate_puff_shroom():
+    img = Image.new("RGBA", (96, 96), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+
+    # Small night mushroom
+    # Stem
+    draw.polygon([(42, 60), (54, 60), (56, 84), (40, 84)], fill=(190, 160, 215, 255), outline=(90, 60, 120, 255), width=2)
+
+    # Cute rounded cap (purple with violet spots)
+    draw.ellipse((24, 28, 72, 66), fill=(160, 65, 195, 255), outline=(85, 25, 115, 255), width=3)
+    # Spots on cap
+    draw.ellipse((34, 34, 44, 44), fill=(215, 140, 240, 255))
+    draw.ellipse((52, 32, 64, 44), fill=(215, 140, 240, 255))
+    draw.ellipse((44, 48, 54, 58), fill=(215, 140, 240, 255))
+
+    # Cute sleepy face on stem
+    draw.ellipse((43, 66, 47, 72), fill=(30, 15, 45, 255))
+    draw.ellipse((49, 66, 53, 72), fill=(30, 15, 45, 255))
+    # Snout blowing spores
+    draw.ellipse((52, 68, 62, 76), fill=(145, 55, 175, 255), outline=(75, 20, 100, 255), width=2)
+
+    img.save("assets/plants/puff_shroom.png")
+
+
+def generate_fume_shroom():
+    img = Image.new("RGBA", (96, 96), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+
+    # Large purple trumpet-mushroom
+    # Sturdy stem
+    draw.polygon([(36, 54), (58, 54), (62, 84), (32, 84)], fill=(165, 135, 195, 255), outline=(80, 50, 110, 255), width=3)
+
+    # Wide cap
+    draw.ellipse((20, 22, 76, 58), fill=(140, 50, 175, 255), outline=(70, 20, 100, 255), width=3)
+    # Bright glowing violet spots
+    draw.ellipse((28, 28, 40, 40), fill=(225, 120, 255, 255))
+    draw.ellipse((56, 26, 68, 38), fill=(225, 120, 255, 255))
+
+    # Big trumpet snout (facing right to shoot fumes)
+    draw.polygon([(52, 42), (76, 36), (82, 66), (54, 60)], fill=(120, 40, 155, 255), outline=(60, 15, 85, 255), width=3)
+    draw.ellipse((74, 36, 84, 66), fill=(40, 10, 55, 255), outline=(20, 5, 30, 255), width=2)
+
+    # Eyes
+    draw.ellipse((38, 44, 46, 54), fill=(255, 255, 255, 255), outline=(60, 20, 85, 255), width=2)
+    draw.ellipse((42, 47, 45, 52), fill=(20, 20, 20, 255))
+
+    img.save("assets/plants/fume_shroom.png")
+
 
 
 # -------------------------------------------------------------
@@ -576,60 +763,214 @@ def generate_pole_vaulter():
     img = Image.new("RGBA", (96, 128), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    # Athletic Jersey zombie
     ox, oy = 8, 0
-    # Legs in white shorts
     draw.polygon([(40 + ox, 78 + oy), (46 + ox, 78 + oy), (44 + ox, 114 + oy), (38 + ox, 114 + oy)],
                  fill=(220, 220, 225, 255), outline=(120, 120, 135, 255), width=2)
     draw.polygon([(48 + ox, 78 + oy), (54 + ox, 78 + oy), (60 + ox, 114 + oy), (54 + ox, 114 + oy)],
                  fill=(220, 220, 225, 255), outline=(120, 120, 135, 255), width=2)
-    # Red athletic singlet
     draw.polygon([(34 + ox, 44 + oy), (62 + ox, 44 + oy), (60 + ox, 80 + oy), (36 + ox, 80 + oy)],
                  fill=(210, 40, 45, 255), outline=(120, 20, 25, 255), width=2)
-    # Green head
     hx, hy = 48 + ox, 32 + oy
     draw.ellipse((hx - 16, hy - 18, hx + 16, hy + 18), fill=(155, 185, 140, 255), outline=(75, 105, 65, 255), width=2)
     draw.ellipse((hx - 1, hy - 11, hx + 13, hy + 3), fill=(255, 255, 240, 255), outline=(50, 70, 45, 255), width=2)
     draw.ellipse((hx + 3, hy - 7, hx + 9, hy - 1), fill=(20, 20, 20, 255))
     draw.arc((hx - 10, hy + 4, hx + 10, hy + 14), start=0, end=180, fill=(45, 25, 25, 255), width=3)
 
-    # Long yellow vaulting pole
     draw.line([(75, 20), (5, 110)], fill=(245, 205, 45, 255), width=5)
     draw.line([(75, 20), (5, 110)], fill=(175, 140, 25, 255), width=1)
-
     img.save("assets/zombies/zombie_polevaulter.png")
 
 
 def generate_newspaper_zombie():
-    # Normal Newspaper Zombie (carrying shield newspaper)
     img = Image.new("RGBA", (96, 128), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     generate_base_zombie_body(draw, ox=6)
 
-    # Grandpa glasses
     draw.ellipse((42, 24, 52, 34), fill=None, outline=(50, 50, 60, 255), width=2)
     draw.ellipse((53, 24, 63, 34), fill=None, outline=(50, 50, 60, 255), width=2)
     draw.line([(52, 29), (53, 29)], fill=(50, 50, 60, 255), width=2)
 
-    # Large Folded Newspaper in hands
     draw.rectangle((12, 46, 42, 92), fill=(235, 230, 220, 255), outline=(80, 80, 80, 255), width=2)
-    # Headline and text lines
     draw.rectangle((16, 50, 38, 56), fill=(40, 40, 40, 255))
     for ty in range(62, 88, 5):
         draw.line([(16, ty), (38, ty)], fill=(100, 100, 100, 255), width=2)
-
     img.save("assets/zombies/zombie_newspaper.png")
 
-    # Angry Newspaper Zombie (after newspaper is shredded)
     img_a = Image.new("RGBA", (96, 128), (0, 0, 0, 0))
     draw_a = ImageDraw.Draw(img_a)
     generate_base_zombie_body(draw_a, ox=2)
-    # Red glowing angry eyes
     draw_a.ellipse((40, 23, 49, 32), fill=(255, 30, 30, 255), outline=(120, 10, 10, 255), width=2)
     draw_a.ellipse((52, 23, 61, 32), fill=(255, 30, 30, 255), outline=(120, 10, 10, 255), width=2)
-    # Shredded newspaper scrap in hand
     draw_a.polygon([(14, 55), (28, 50), (22, 70), (12, 65)], fill=(225, 220, 210, 255), outline=(80, 80, 80, 255), width=1)
     img_a.save("assets/zombies/zombie_newspaper_angry.png")
+
+
+def generate_football_zombie():
+    img = Image.new("RGBA", (96, 128), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+
+    ox, oy = 0, 0
+    # Athletic White Football Pants
+    draw.polygon([(40 + ox, 76 + oy), (46 + ox, 76 + oy), (44 + ox, 114 + oy), (38 + ox, 114 + oy)],
+                 fill=(235, 235, 235, 255), outline=(120, 120, 120, 255), width=2)
+    draw.polygon([(48 + ox, 76 + oy), (54 + ox, 76 + oy), (60 + ox, 114 + oy), (54 + ox, 114 + oy)],
+                 fill=(235, 235, 235, 255), outline=(120, 120, 120, 255), width=2)
+    # Cleats
+    draw.ellipse((34 + ox, 112 + oy, 46 + ox, 122 + oy), fill=(40, 40, 40, 255), outline=(15, 15, 15, 255), width=2)
+    draw.ellipse((50 + ox, 112 + oy, 64 + ox, 122 + oy), fill=(40, 40, 40, 255), outline=(15, 15, 15, 255), width=2)
+
+    # Big Brown Padded Football Jersey with #7
+    draw.polygon([(30 + ox, 40 + oy), (66 + ox, 40 + oy), (62 + ox, 80 + oy), (34 + ox, 80 + oy)],
+                 fill=(160, 40, 35, 255), outline=(90, 15, 15, 255), width=3)
+    # Jersey stripes & number
+    draw.line([(34 + ox, 46 + oy), (62 + ox, 46 + oy)], fill=(245, 245, 245, 255), width=2)
+    draw.rectangle((44 + ox, 54 + oy, 52 + ox, 68 + oy), fill=(255, 255, 255, 255))
+
+    # Padded Football Helmet (leather/red with white central stripe)
+    hx, hy = 48 + ox, 28 + oy
+    draw.ellipse((hx - 18, hy - 20, hx + 18, hy + 18), fill=(185, 30, 30, 255), outline=(100, 10, 10, 255), width=3)
+    draw.line([(hx, hy - 20), (hx, hy + 18)], fill=(255, 255, 255, 255), width=3)
+    # Metal face cage grill
+    for gy in [-6, 2, 10]:
+        draw.line([(hx - 14, hy + gy), (hx + 14, hy + gy)], fill=(180, 185, 195, 255), width=3)
+    draw.line([(hx - 4, hy - 10), (hx - 4, hy + 14)], fill=(180, 185, 195, 255), width=2)
+    draw.line([(hx + 4, hy - 10), (hx + 4, hy + 14)], fill=(180, 185, 195, 255), width=2)
+
+    # Red sprint eyes peeking through cage
+    draw.ellipse((hx - 10, hy - 6, hx - 4, hy), fill=(255, 230, 40, 255))
+    draw.ellipse((hx + 4, hy - 6, hx + 10, hy), fill=(255, 230, 40, 255))
+
+    img.save("assets/zombies/zombie_football.png")
+
+
+def generate_screendoor_zombie():
+    img = Image.new("RGBA", (96, 128), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    generate_base_zombie_body(draw, ox=12)
+
+    # Large Metal Screen Door shield held in front
+    sx0, sy0, sx1, sy1 = 10, 25, 46, 115
+    # Aluminum door frame
+    draw.rounded_rectangle((sx0, sy0, sx1, sy1), radius=4, fill=(190, 195, 205, 255), outline=(100, 105, 115, 255), width=3)
+    # Dark mesh screen interior
+    draw.rectangle((sx0 + 4, sy0 + 6, sx1 - 4, sy1 - 6), fill=(70, 75, 85, 220), outline=(50, 55, 60, 255), width=1)
+    # Mesh cross grid
+    for mx in range(sx0 + 8, sx1 - 4, 6):
+        draw.line([(mx, sy0 + 6), (mx, sy1 - 6)], fill=(120, 125, 135, 180), width=1)
+    for my in range(sy0 + 10, sy1 - 6, 8):
+        draw.line([(sx0 + 4, my), (sx1 - 4, my)], fill=(120, 125, 135, 180), width=1)
+    # Door handle
+    draw.rectangle((sx1 - 8, sy0 + 45, sx1 - 2, sy0 + 55), fill=(40, 40, 45, 255))
+
+    img.save("assets/zombies/zombie_screendoor.png")
+
+
+def generate_disco_zombie():
+    img = Image.new("RGBA", (96, 128), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+
+    ox, oy = 0, 0
+    # Flared 70s white bell-bottom trousers
+    draw.polygon([(36 + ox, 76 + oy), (46 + ox, 76 + oy), (48 + ox, 114 + oy), (30 + ox, 114 + oy)],
+                 fill=(245, 245, 250, 255), outline=(150, 150, 165, 255), width=2)
+    draw.polygon([(48 + ox, 76 + oy), (58 + ox, 76 + oy), (66 + ox, 114 + oy), (48 + ox, 114 + oy)],
+                 fill=(245, 245, 250, 255), outline=(150, 150, 165, 255), width=2)
+    # Platform shoes
+    draw.rectangle((28 + ox, 114 + oy, 48 + ox, 124 + oy), fill=(210, 40, 120, 255), outline=(110, 10, 60, 255), width=2)
+    draw.rectangle((48 + ox, 114 + oy, 68 + ox, 124 + oy), fill=(210, 40, 120, 255), outline=(110, 10, 60, 255), width=2)
+
+    # Open collar Disco Shirt & sparkly white blazer
+    draw.polygon([(32 + ox, 42 + oy), (64 + ox, 42 + oy), (60 + ox, 78 + oy), (36 + ox, 78 + oy)],
+                 fill=(250, 250, 255, 255), outline=(160, 160, 180, 255), width=2)
+    # Deep V-neck showing bare zombie chest
+    draw.polygon([(42 + ox, 42 + oy), (54 + ox, 42 + oy), (48 + ox, 62 + oy)], fill=(145, 175, 130, 255))
+    # Shiny gold chain and disco medallion
+    draw.arc((42 + ox, 46 + oy, 54 + ox, 66 + oy), start=0, end=180, fill=(255, 215, 30, 255), width=2)
+    draw.ellipse((45 + ox, 64 + oy, 51 + ox, 70 + oy), fill=(255, 220, 40, 255))
+
+    # Giant brown Afro haircut!
+    hx, hy = 48 + ox, 32 + oy
+    draw.ellipse((hx - 24, hy - 32, hx + 24, hy + 6), fill=(65, 40, 25, 255), outline=(35, 20, 10, 255), width=3)
+
+    # Zombie face inside afro
+    draw.ellipse((hx - 14, hy - 14, hx + 14, hy + 16), fill=(155, 185, 140, 255), outline=(75, 105, 65, 255), width=2)
+
+    # Cool Star / Disco Sunglasses
+    draw.polygon([(hx - 13, hy - 6), (hx - 3, hy - 6), (hx - 4, hy + 4), (hx - 12, hy + 4)], fill=(20, 20, 20, 255))
+    draw.polygon([(hx + 3, hy - 6), (hx + 13, hy - 6), (hx + 12, hy + 4), (hx + 4, hy + 4)], fill=(20, 20, 20, 255))
+    draw.line([(hx - 3, hy - 3), (hx + 3, hy - 3)], fill=(255, 215, 30, 255), width=2)
+
+    # Smug grin
+    draw.arc((hx - 8, hy + 6, hx + 8, hy + 14), start=0, end=180, fill=(40, 20, 20, 255), width=2)
+
+    img.save("assets/zombies/zombie_disco.png")
+
+
+def generate_backup_zombie():
+    img = Image.new("RGBA", (96, 128), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+
+    ox, oy = 0, 0
+    # Purple flared trousers
+    draw.polygon([(36 + ox, 76 + oy), (46 + ox, 76 + oy), (46 + ox, 114 + oy), (32 + ox, 114 + oy)],
+                 fill=(140, 50, 160, 255), outline=(70, 15, 80, 255), width=2)
+    draw.polygon([(48 + ox, 76 + oy), (58 + ox, 76 + oy), (64 + ox, 114 + oy), (48 + ox, 114 + oy)],
+                 fill=(140, 50, 160, 255), outline=(70, 15, 80, 255), width=2)
+
+    # Silver glitter shirt
+    draw.polygon([(34 + ox, 42 + oy), (62 + ox, 42 + oy), (58 + ox, 78 + oy), (36 + ox, 78 + oy)],
+                 fill=(200, 205, 220, 255), outline=(110, 115, 130, 255), width=2)
+
+    # Head and smaller afro
+    hx, hy = 48 + ox, 32 + oy
+    draw.ellipse((hx - 18, hy - 24, hx + 18, hy + 4), fill=(55, 35, 20, 255), outline=(30, 15, 10, 255), width=2)
+    draw.ellipse((hx - 13, hy - 12, hx + 13, hy + 14), fill=(155, 185, 140, 255), outline=(75, 105, 65, 255), width=2)
+    # Sunglasses
+    draw.rectangle((hx - 11, hy - 4, hx - 2, hy + 3), fill=(30, 30, 35, 255))
+    draw.rectangle((hx + 2, hy - 4, hx + 11, hy + 3), fill=(30, 30, 35, 255))
+
+    img.save("assets/zombies/zombie_backup.png")
+
+
+def generate_gargantuar():
+    # Massive Brute (112x144)
+    img = Image.new("RGBA", (112, 144), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+
+    ox, oy = 8, 8
+    # Massive tree-trunk legs
+    draw.polygon([(36 + ox, 85 + oy), (48 + ox, 85 + oy), (46 + ox, 128 + oy), (32 + ox, 128 + oy)],
+                 fill=(70, 50, 85, 255), outline=(35, 20, 45, 255), width=3)
+    draw.polygon([(54 + ox, 85 + oy), (66 + ox, 85 + oy), (70 + ox, 128 + oy), (56 + ox, 128 + oy)],
+                 fill=(70, 50, 85, 255), outline=(35, 20, 45, 255), width=3)
+
+    # Giant muscular greenish-gray torso
+    draw.polygon([(26 + ox, 38 + oy), (76 + ox, 38 + oy), (70 + ox, 88 + oy), (32 + ox, 88 + oy)],
+                 fill=(135, 165, 120, 255), outline=(65, 90, 55, 255), width=3)
+    # Heavy leather apron
+    draw.polygon([(34 + ox, 44 + oy), (68 + ox, 44 + oy), (64 + ox, 86 + oy), (36 + ox, 86 + oy)],
+                 fill=(115, 80, 50, 255), outline=(60, 40, 20, 255), width=2)
+
+    # Huge Head with metal bolts
+    hx, hy = 50 + ox, 24 + oy
+    draw.ellipse((hx - 20, hy - 20, hx + 20, hy + 20), fill=(145, 175, 130, 255), outline=(65, 90, 55, 255), width=3)
+    # Glowing red tiny furious eyes
+    draw.ellipse((hx - 12, hy - 6, hx - 5, hy + 1), fill=(255, 30, 30, 255), outline=(100, 10, 10, 255), width=2)
+    draw.ellipse((hx + 5, hy - 6, hx + 12, hy + 1), fill=(255, 30, 30, 255), outline=(100, 10, 10, 255), width=2)
+    # Heavy jaw with tusks/teeth
+    draw.rectangle((hx - 10, hy + 6, hx + 10, hy + 14), fill=(40, 25, 20, 255))
+    draw.polygon([(hx - 8, hy + 14), (hx - 5, hy + 8), (hx - 2, hy + 14)], fill=(245, 245, 230, 255))
+    draw.polygon([(hx + 2, hy + 14), (hx + 5, hy + 8), (hx + 8, hy + 14)], fill=(245, 245, 230, 255))
+
+    # Massive Telephone Pole weapon resting in hands
+    draw.line([(88 + ox, 6 + oy), (12 + ox, 136 + oy)], fill=(130, 90, 50, 255), width=10)
+    draw.line([(88 + ox, 6 + oy), (12 + ox, 136 + oy)], fill=(75, 50, 25, 255), width=2)
+    # Pole crossbar with insulators
+    draw.line([(78 + ox, 18 + oy), (96 + ox, 32 + oy)], fill=(120, 80, 40, 255), width=6)
+    draw.ellipse((76 + ox, 16 + oy, 84 + ox, 24 + oy), fill=(225, 230, 240, 255))
+    draw.ellipse((92 + ox, 28 + oy, 100 + ox, 36 + oy), fill=(225, 230, 240, 255))
+
+    img.save("assets/zombies/zombie_gargantuar.png")
 
 
 # -------------------------------------------------------------
@@ -653,6 +994,23 @@ def generate_projectiles():
     draw_sp.line([(10, 16), (22, 16)], fill=(255, 255, 255, 220), width=2)
     img_sp.save("assets/projectiles/snow_pea_proj.png")
 
+    # Fume Spore Cloud (48x48)
+    img_fume = Image.new("RGBA", (48, 48), (0, 0, 0, 0))
+    draw_fume = ImageDraw.Draw(img_fume)
+    draw_fume.ellipse((6, 8, 42, 40), fill=(210, 90, 235, 170))
+    draw_fume.ellipse((14, 12, 34, 34), fill=(240, 140, 255, 220))
+    draw_fume.ellipse((20, 16, 28, 26), fill=(255, 255, 255, 240))
+    img_fume.save("assets/projectiles/fume_spore.png")
+
+    # Jalapeno Fire Wall (Row incinerator segment 104x96)
+    img_fire = Image.new("RGBA", (104, 96), (0, 0, 0, 0))
+    draw_fire = ImageDraw.Draw(img_fire)
+    for fx in range(6, 98, 14):
+        # Spikes of blazing flame
+        draw_fire.polygon([(fx, 94), (fx + 7, 10), (fx + 14, 94)], fill=(255, 60, 20, 240))
+        draw_fire.polygon([(fx + 3, 94), (fx + 7, 30), (fx + 11, 94)], fill=(255, 215, 30, 255))
+    img_fire.save("assets/projectiles/jalapeno_fire.png")
+
     # Sun entity (72x72)
     img_sun = Image.new("RGBA", (72, 72), (0, 0, 0, 0))
     draw_sun = ImageDraw.Draw(img_sun)
@@ -675,16 +1033,12 @@ def generate_projectiles():
     # Lawn Mower (80x64)
     img_lm = Image.new("RGBA", (80, 64), (0, 0, 0, 0))
     draw_lm = ImageDraw.Draw(img_lm)
-    # Red engine chassis
     draw_lm.rounded_rectangle((14, 22, 62, 54), radius=8, fill=(225, 35, 45, 255), outline=(135, 15, 25, 255), width=3)
-    # Silver motor top
     draw_lm.rectangle((26, 12, 50, 22), fill=(185, 190, 200, 255), outline=(100, 105, 115, 255), width=2)
-    # Black wheels
     draw_lm.ellipse((8, 40, 24, 58), fill=(40, 40, 45, 255), outline=(15, 15, 20, 255), width=3)
     draw_lm.ellipse((13, 45, 19, 53), fill=(190, 190, 200, 255))
     draw_lm.ellipse((52, 40, 68, 58), fill=(40, 40, 45, 255), outline=(15, 15, 20, 255), width=3)
     draw_lm.ellipse((57, 45, 63, 53), fill=(190, 190, 200, 255))
-    # Handlebar
     draw_lm.line([(20, 26), (4, 4)], fill=(150, 155, 165, 255), width=4)
     draw_lm.line([(2, 4), (8, 4)], fill=(30, 30, 30, 255), width=4)
     img_lm.save("assets/projectiles/lawn_mower.png")
@@ -692,18 +1046,14 @@ def generate_projectiles():
     # Shovel (64x64)
     img_sh = Image.new("RGBA", (64, 64), (0, 0, 0, 0))
     draw_sh = ImageDraw.Draw(img_sh)
-    # Wooden handle angled
     draw_sh.line([(12, 12), (40, 40)], fill=(160, 105, 55, 255), width=5)
-    # Handle grip D-shape
     draw_sh.arc((6, 6, 18, 18), start=45, end=315, fill=(100, 60, 25, 255), width=3)
-    # Steel blade
     draw_sh.polygon([(36, 36), (56, 44), (44, 56)], fill=(175, 185, 195, 255), outline=(90, 100, 110, 255), width=2)
     img_sh.save("assets/ui/shovel.png")
 
     # Cherry Bomb Explosion Burst (160x160)
     img_exp = Image.new("RGBA", (160, 160), (0, 0, 0, 0))
     draw_exp = ImageDraw.Draw(img_exp)
-    # Multi-point starburst
     ecx, ecy = 80, 80
     num_spikes = 16
     poly_pts = []
@@ -713,7 +1063,6 @@ def generate_projectiles():
         poly_pts.append((ecx + math.cos(ang) * rad, ecy + math.sin(ang) * rad))
     draw_exp.polygon(poly_pts, fill=(255, 60, 20, 240), outline=(255, 220, 40, 255), width=4)
 
-    # Inner bright yellow core
     poly_pts2 = []
     for i in range(num_spikes * 2):
         rad = 45 if i % 2 == 0 else 24
@@ -722,15 +1071,36 @@ def generate_projectiles():
     draw_exp.polygon(poly_pts2, fill=(255, 230, 50, 255))
     img_exp.save("assets/projectiles/cherry_explosion.png")
 
-    # Bowling Nut (Rolling ball 80x80)
+    # Bowling Nut - Normal (Rolling ball 80x80)
     img_bn = Image.new("RGBA", (80, 80), (0, 0, 0, 0))
     draw_bn = ImageDraw.Draw(img_bn)
     draw_bn.ellipse((6, 6, 74, 74), fill=(195, 145, 80, 255), outline=(100, 65, 30, 255), width=4)
     draw_bn.ellipse((14, 14, 60, 60), fill=(225, 180, 110, 255))
-    # Rolling spiral motion lines
     draw_bn.arc((18, 18, 62, 62), start=40, end=200, fill=(120, 80, 35, 255), width=4)
     draw_bn.arc((26, 26, 54, 54), start=220, end=380, fill=(120, 80, 35, 255), width=4)
     img_bn.save("assets/projectiles/bowling_nut.png")
+
+    # Bowling Giant Nut - Riesen-Wallnuss (100x100)
+    img_gn = Image.new("RGBA", (100, 100), (0, 0, 0, 0))
+    draw_gn = ImageDraw.Draw(img_gn)
+    draw_gn.ellipse((4, 4, 96, 96), fill=(160, 110, 55, 255), outline=(75, 45, 20, 255), width=5)
+    draw_gn.ellipse((12, 12, 88, 88), fill=(205, 155, 90, 255))
+    # Heavy stone/steel bands
+    draw_gn.arc((20, 20, 80, 80), start=30, end=210, fill=(90, 55, 25, 255), width=6)
+    draw_gn.arc((20, 20, 80, 80), start=220, end=390, fill=(90, 55, 25, 255), width=6)
+    img_gn.save("assets/projectiles/bowling_giant_nut.png")
+
+    # Bowling Ice Nut - Schnee-Nuss (80x80)
+    img_in = Image.new("RGBA", (80, 80), (0, 0, 0, 0))
+    draw_in = ImageDraw.Draw(img_in)
+    draw_in.ellipse((6, 6, 74, 74), fill=(120, 210, 245, 255), outline=(40, 120, 180, 255), width=4)
+    draw_in.ellipse((14, 14, 60, 60), fill=(185, 240, 255, 255))
+    # Snowflake crystal pattern
+    draw_in.line([(40, 18), (40, 62)], fill=(255, 255, 255, 255), width=4)
+    draw_in.line([(18, 40), (62, 40)], fill=(255, 255, 255, 255), width=4)
+    draw_in.line([(24, 24), (56, 56)], fill=(255, 255, 255, 255), width=3)
+    draw_in.line([(24, 56), (56, 24)], fill=(255, 255, 255, 255), width=3)
+    img_in.save("assets/projectiles/bowling_ice_nut.png")
 
 
 # -------------------------------------------------------------
@@ -740,11 +1110,8 @@ def generate_ui_assets():
     # Seed packet background frame (80x100)
     img_sp = Image.new("RGBA", (80, 100), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img_sp)
-    # Card base
     draw.rounded_rectangle((2, 2, 78, 98), radius=6, fill=(230, 215, 175, 255), outline=(125, 95, 55, 255), width=3)
-    # Image frame inner slot
     draw.rectangle((8, 8, 72, 68), fill=(245, 235, 205, 255), outline=(160, 130, 90, 255), width=2)
-    # Bottom Sun cost tag
     draw.rounded_rectangle((6, 72, 74, 94), radius=4, fill=(255, 255, 255, 255), outline=(140, 110, 70, 255), width=2)
     img_sp.save("assets/ui/seed_packet_base.png")
 
@@ -789,24 +1156,38 @@ def main():
     generate_lawn_bowling()
     generate_menu_bg()
 
+    # Original plants + new plants
     generate_peashooter()
     generate_snow_pea()
     generate_sunflower()
     generate_wallnut_stages()
     generate_cherry_bomb()
     generate_potato_mine_stages()
+    generate_repeater()
+    generate_chomper()
+    generate_jalapeno()
+    generate_squash()
+    generate_puff_shroom()
+    generate_fume_shroom()
 
+    # Original zombies + new zombies
     generate_normal_zombie()
     generate_conehead_zombie()
     generate_buckethead_zombie()
     generate_flag_zombie()
     generate_pole_vaulter()
     generate_newspaper_zombie()
+    generate_football_zombie()
+    generate_screendoor_zombie()
+    generate_disco_zombie()
+    generate_backup_zombie()
+    generate_gargantuar()
 
     generate_projectiles()
     generate_ui_assets()
 
     print("All assets successfully generated!")
+
 
 
 if __name__ == "__main__":

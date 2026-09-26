@@ -188,32 +188,13 @@ class AlmanacScene(Scene):
 
             # Description section
             d_hdr = self.font_sub.render("Fähigkeit:", True, (50, 40, 30))
-            surface.blit(d_hdr, (card_x + 40, card_y + 205))
-            d_txt = self.font_desc.render(spec["description_de"], True, (30, 30, 30))
-            surface.blit(d_txt, (card_x + 40, card_y + 245))
+            surface.blit(d_hdr, (card_x + 40, card_y + 200))
+            self._render_wrapped_text(surface, spec["description_de"], self.font_desc, (30, 30, 30), card_x + 40, card_y + 235, card_w - 80, 26)
 
             # Lore / Story section
             l_hdr = self.font_sub.render("Garten-Geschichten:", True, (50, 40, 30))
             surface.blit(l_hdr, (card_x + 40, card_y + 315))
-
-            # Word wrap lore text into lines
-            lore_text = spec["lore_de"]
-            words = lore_text.split(" ")
-            lines = []
-            curr = ""
-            for w in words:
-                test = curr + " " + w if curr else w
-                if self.font_lore.size(test)[0] < (card_w - 90):
-                    curr = test
-                else:
-                    lines.append(curr)
-                    curr = w
-            if curr:
-                lines.append(curr)
-
-            for idx, line in enumerate(lines):
-                l_line = self.font_lore.render(line, True, (60, 50, 40))
-                surface.blit(l_line, (card_x + 40, card_y + 360 + idx * 26))
+            self._render_wrapped_text(surface, spec["lore_de"], self.font_lore, (60, 50, 40), card_x + 40, card_y + 355, card_w - 80, 24)
 
         # Render selected zombie details
         else:
@@ -233,27 +214,27 @@ class AlmanacScene(Scene):
             pygame.draw.line(surface, (180, 160, 130), (card_x + 30, card_y + 185), (card_x + card_w - 30, card_y + 185), 2)
 
             d_hdr = self.font_sub.render("Eigenschaften:", True, (50, 40, 30))
-            surface.blit(d_hdr, (card_x + 40, card_y + 205))
-            d_txt = self.font_desc.render(spec["description_de"], True, (30, 30, 30))
-            surface.blit(d_txt, (card_x + 40, card_y + 245))
+            surface.blit(d_hdr, (card_x + 40, card_y + 200))
+            self._render_wrapped_text(surface, spec["description_de"], self.font_desc, (30, 30, 30), card_x + 40, card_y + 235, card_w - 80, 26)
 
             l_hdr = self.font_sub.render("Zombie-Akte:", True, (50, 40, 30))
             surface.blit(l_hdr, (card_x + 40, card_y + 315))
+            self._render_wrapped_text(surface, spec["lore_de"], self.font_lore, (60, 50, 40), card_x + 40, card_y + 355, card_w - 80, 24)
 
-            lore_text = spec["lore_de"]
-            words = lore_text.split(" ")
-            lines = []
-            curr = ""
-            for w in words:
-                test = curr + " " + w if curr else w
-                if self.font_lore.size(test)[0] < (card_w - 90):
-                    curr = test
-                else:
-                    lines.append(curr)
-                    curr = w
-            if curr:
+    def _render_wrapped_text(self, surface: pygame.Surface, text: str, font: pygame.font.Font, color: tuple, start_x: int, start_y: int, max_width: int, line_spacing: int):
+        words = text.split(" ")
+        lines = []
+        curr = ""
+        for w in words:
+            test = curr + " " + w if curr else w
+            if font.size(test)[0] < max_width:
+                curr = test
+            else:
                 lines.append(curr)
+                curr = w
+        if curr:
+            lines.append(curr)
 
-            for idx, line in enumerate(lines):
-                l_line = self.font_lore.render(line, True, (60, 50, 40))
-                surface.blit(l_line, (card_x + 40, card_y + 360 + idx * 26))
+        for idx, line in enumerate(lines):
+            l_surf = font.render(line, True, color)
+            surface.blit(l_surf, (start_x, start_y + idx * line_spacing))

@@ -9,12 +9,17 @@ import pygame
 from assets import AssetManager
 from config import VIRTUAL_HEIGHT, VIRTUAL_WIDTH
 from entities.zombie import (
+    BackupZombie,
     BucketheadZombie,
     ConeheadZombie,
+    DiscoZombie,
     FlagZombie,
+    FootballZombie,
+    Gargantuar,
     NewspaperZombie,
     NormalZombie,
     PoleVaulterZombie,
+    ScreenDoorZombie,
     Zombie,
 )
 
@@ -37,7 +42,7 @@ class WaveManager:
 
         self.current_wave = 0
         self.wave_timer = 0.0
-        self.wave_delay = 14.0  # seconds before first wave
+        self.wave_delay = 24.0  # Generous grace period so player can build sunflowers!
         self.is_wave_active = False
 
         self.huge_wave_banner_timer = 0.0
@@ -74,6 +79,16 @@ class WaveManager:
             return PoleVaulterZombie(row, start_x)
         elif zombie_type == "newspaper":
             return NewspaperZombie(row, start_x)
+        elif zombie_type == "football":
+            return FootballZombie(row, start_x)
+        elif zombie_type == "screendoor":
+            return ScreenDoorZombie(row, start_x)
+        elif zombie_type == "disco":
+            return DiscoZombie(row, start_x)
+        elif zombie_type == "backup":
+            return BackupZombie(row, start_x)
+        elif zombie_type == "gargantuar":
+            return Gargantuar(row, start_x)
         else:
             return NormalZombie(row, start_x)
 
@@ -85,12 +100,12 @@ class WaveManager:
         if is_huge:
             self.trigger_huge_wave_warning()
 
-        # Count of zombies scales with wave progression
+        # Count of zombies scales gently with wave progression
         if self.is_endless:
             count = 3 + self.current_wave * 2
         else:
-            progress_ratio = self.current_wave / self.total_waves
-            count = int(2 + progress_ratio * 7)
+            progress_ratio = self.current_wave / max(1, self.total_waves)
+            count = int(2 + progress_ratio * 5)
 
         if is_huge:
             count += len(self.active_rows) * 2
@@ -100,17 +115,20 @@ class WaveManager:
             flag_row = random.choice(self.active_rows)
             zombies.append(self.spawn_zombie("flag", flag_row, offset_x=0.0))
 
-        # Weight zombie types: normal is common, special types appear more later
         types_pool = []
         for z_type in self.allowed_zombie_types:
             if z_type == "normal":
                 types_pool.extend(["normal"] * 6)
             elif z_type == "conehead":
-                types_pool.extend(["conehead"] * 4)
+                types_pool.extend(["conehead"] * 3)
             elif z_type == "buckethead":
                 types_pool.extend(["buckethead"] * 2)
-            elif z_type in ("polevaulter", "newspaper"):
-                types_pool.extend([z_type] * 3)
+            elif z_type in ("polevaulter", "newspaper", "screendoor"):
+                types_pool.extend([z_type] * 2)
+            elif z_type in ("football", "disco"):
+                types_pool.extend([z_type] * 2)
+            elif z_type == "gargantuar":
+                types_pool.extend(["gargantuar"] * 1)
 
         if not types_pool:
             types_pool = ["normal"]
@@ -118,7 +136,7 @@ class WaveManager:
         for i in range(count):
             row = random.choice(self.active_rows)
             z_type = random.choice(types_pool)
-            offset_x = random.uniform(10.0, 180.0) + (i * 20.0)
+            offset_x = random.uniform(10.0, 180.0) + (i * 25.0)
             zombies.append(self.spawn_zombie(z_type, row, offset_x))
 
         return zombies

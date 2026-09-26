@@ -93,6 +93,15 @@ class Button:
         text_surf = self.font.render(self.text, True, text_color)
         shadow_surf = self.font.render(self.text, True, (20, 20, 20))
 
+        # Ensure text never overflows button boundaries
+        max_w = self.rect.width - 24
+        if text_surf.get_width() > max_w:
+            scale = max_w / text_surf.get_width()
+            new_w = int(max_w)
+            new_h = max(10, int(text_surf.get_height() * scale))
+            text_surf = pygame.transform.smoothscale(text_surf, (new_w, new_h))
+            shadow_surf = pygame.transform.smoothscale(shadow_surf, (new_w, new_h))
+
         tx = (self.rect.width - text_surf.get_width()) // 2
         ty = (self.rect.height - text_surf.get_height()) // 2
 

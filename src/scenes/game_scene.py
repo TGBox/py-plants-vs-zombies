@@ -20,14 +20,27 @@ from config import (
 from entities.lawn_mower import LawnMower
 from entities.plant import (
     CherryBomb,
+    Chomper,
+    FumeShroom,
+    Jalapeno,
     Peashooter,
     Plant,
     PotatoMine,
+    PuffShroom,
+    Repeater,
     SnowPea,
+    Squash,
     Sunflower,
     Wallnut,
 )
-from entities.projectile import BowlingNut, Pea, Projectile, SnowPea as SnowPeaProj
+from entities.projectile import (
+    BowlingNut,
+    FumeSpore,
+    JalapenoFlame,
+    Pea,
+    Projectile,
+    SnowPea as SnowPeaProj,
+)
 from entities.sun import Sun
 from entities.zombie import Zombie
 from scenes.scene_manager import Scene, SceneManager
@@ -186,6 +199,18 @@ class GameScene(Scene):
             return CherryBomb(row, col)
         elif plant_type == "potato_mine":
             return PotatoMine(row, col)
+        elif plant_type == "repeater":
+            return Repeater(row, col)
+        elif plant_type == "chomper":
+            return Chomper(row, col)
+        elif plant_type == "jalapeno":
+            return Jalapeno(row, col)
+        elif plant_type == "squash":
+            return Squash(row, col)
+        elif plant_type == "puff_shroom":
+            return PuffShroom(row, col)
+        elif plant_type == "fume_shroom":
+            return FumeShroom(row, col)
         else:
             return Plant(plant_type, row, col)
 
@@ -313,7 +338,30 @@ class GameScene(Scene):
             if not proj.is_alive:
                 continue
 
-            # Collision with zombies in same row
+            # Check Jalapeno row incinerator
+            if isinstance(proj, JalapenoFlame):
+                for z in self.zombies:
+                    if z.is_alive and z.row == proj.row and id(z) not in proj.hit_zombies:
+                        proj.hit_zombies.add(id(z))
+                        z.take_damage(proj.damage)
+                        self.particle_sys.spawn_explosion(z.x, z.y)
+                        if not z.is_alive:
+                            self.wave_mgr.zombies_killed_total += 1
+                continue
+
+            # Check piercing Fume spore
+            if isinstance(proj, FumeSpore):
+                p_hitbox = pygame.Rect(int(proj.x - proj.radius), int(proj.y - proj.radius), proj.radius * 2, proj.radius * 2)
+                for z in self.zombies:
+                    if z.is_alive and z.row == proj.row and id(z) not in proj.hit_zombies and p_hitbox.colliderect(z.get_hitbox()):
+                        proj.hit_zombies.add(id(z))
+                        z.take_damage(proj.damage)
+                        self.particle_sys.spawn_splat(proj.x, proj.y, is_ice=False)
+                        if not z.is_alive:
+                            self.wave_mgr.zombies_killed_total += 1
+                continue
+
+            # Standard projectile collision (Pea, SnowPea, etc.)
             p_hitbox = proj.get_hitbox()
             for z in self.zombies:
                 if z.is_alive and z.row == proj.row and p_hitbox.colliderect(z.get_hitbox()):
@@ -332,9 +380,12 @@ class GameScene(Scene):
         self.projectiles = [p for p in self.projectiles if p.is_alive]
 
         # 6. Update Zombies & Lawn Mowers
+        new_dancers: list[Zombie] = []
         for z in self.zombies:
             plants_in_row = self.grid.get_plants_in_row(z.row)
-            z.update(dt, plants_in_row, self.particle_sys)
+            z.update(dt, plants_in_row, self.particle_sys, spawned_zombies_list=new_dancers)
+        if new_dancers:
+            self.zombies.extend(new_dancers)
 
             # Check Lawn Mower activation
             if z.x <= (GRID_START_X - 10):

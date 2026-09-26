@@ -98,3 +98,16 @@ class AssetManager:
 
     def get_font(self, size_key: str = "normal") -> pygame.font.Font:
         return self.fonts.get(size_key, self.fonts.get("normal", pygame.font.Font(None, 24)))
+
+
+def apply_tint(surface: pygame.Surface, rgb_color: tuple[int, int, int], blend_mode: int = pygame.BLEND_RGB_ADD) -> pygame.Surface:
+    """
+    Applies color tint (e.g. damage flash or freeze tint) to a surface
+    WITHOUT altering any transparent pixels (alpha values remain 100% preserved).
+    """
+    tinted = surface.copy()
+    overlay = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
+    overlay.fill((*rgb_color[:3], 255))
+    tinted.blit(overlay, (0, 0), special_flags=blend_mode)
+    return tinted
+

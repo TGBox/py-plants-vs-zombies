@@ -1,7 +1,8 @@
 """
 Automated validation suite for Plants vs. Zombies clone.
-Tests asset loading, entity logic, damage/combat mechanics, saving/loading,
-and runs a multi-frame headless simulation.
+Tests asset loading, tinting/alpha transparency, entity logic, damage/combat mechanics,
+new plants & zombies, bowling nut variants (Cherry explosion, Giant steamroller, Ice nut),
+saving/loading, and runs a multi-frame headless simulation.
 """
 
 import os
@@ -10,29 +11,57 @@ import sys
 # Ensure headless video driver for automated testing
 os.environ["SDL_VIDEODRIVER"] = "dummy"
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+SRC_DIR = os.path.join(ROOT_DIR, "src")
+if SRC_DIR not in sys.path:
+    sys.path.insert(0, SRC_DIR)
+if ROOT_DIR not in sys.path:
+    sys.path.insert(1, ROOT_DIR)
 
 import pygame
-from assets import AssetManager
+from assets import AssetManager, apply_tint
 from config import GRID_ROWS, PLANT_SPECS, ZOMBIE_SPECS
 from entities.lawn_mower import LawnMower
 from entities.plant import (
     CherryBomb,
+    Chomper,
+    FumeShroom,
+    Jalapeno,
     Peashooter,
+    Plant,
     PotatoMine,
+    PuffShroom,
+    Repeater,
     SnowPea,
+    Squash,
     Sunflower,
     Wallnut,
 )
-from entities.projectile import BowlingNut, Pea, SnowPea as SnowPeaProj
+from entities.projectile import (
+    BaseBowlingNut,
+    BowlingCherryNut,
+    BowlingGiantNut,
+    BowlingIceNut,
+    BowlingNut,
+    FumeSpore,
+    JalapenoFlame,
+    Pea,
+    SnowPea as SnowPeaProj,
+)
 from entities.sun import Sun
 from entities.zombie import (
+    BackupZombie,
     BucketheadZombie,
     ConeheadZombie,
+    DiscoZombie,
     FlagZombie,
+    FootballZombie,
+    Gargantuar,
     NewspaperZombie,
     NormalZombie,
     PoleVaulterZombie,
+    ScreenDoorZombie,
+    Zombie,
 )
 from savegame import SaveManager
 from scenes.almanac_scene import AlmanacScene
@@ -45,8 +74,8 @@ from systems.particle import ParticleSystem
 from systems.wave_manager import WaveManager
 
 
-def test_assets():
-    print("Testing asset loading...")
+def test_assets_and_tinting():
+    print("Testing asset loading and alpha tinting...")
     pygame.init()
     pygame.display.set_mode((1280, 720))
     assets = AssetManager.get_instance()
@@ -55,14 +84,42 @@ def test_assets():
     # Verify essential assets
     assert assets.get_image("backgrounds/lawn_day") is not None
     assert assets.get_image("backgrounds/lawn_night") is not None
-    assert assets.get_image("plants/peashooter") is not None
-    assert assets.get_image("plants/sunflower") is not None
-    assert assets.get_image("plants/wallnut") is not None
-    assert assets.get_image("zombies/zombie_normal") is not None
-    assert assets.get_image("projectiles/pea") is not None
-    assert assets.get_image("projectiles/sun") is not None
-    assert assets.get_font("normal") is not None
-    print("  -> Assets OK!")
+    assert assets.get_image("backgrounds/lawn_bowling") is not None
+    assert assets.get_image("backgrounds/menu_bg") is not None
+
+    # Verify all 12 plant images
+    for p_id in PLANT_SPECS:
+        img = assets.get_image(f"plants/{p_id}")
+        assert img is not None, f"Plant asset missing: {p_id}"
+
+    # Verify all 11 zombie images
+    for z_id in ZOMBIE_SPECS:
+        img = assets.get_image(f"zombies/zombie_{z_id}")
+        assert img is not None, f"Zombie asset missing: {z_id}"
+
+    # Verify potato mine specific stages & projectiles
+    assert assets.get_image("plants/potato_mine_unarmed") is not None
+    assert assets.get_image("plants/potato_mine_armed") is not None
+    assert assets.get_image("projectiles/bowling_giant_nut") is not None
+    assert assets.get_image("projectiles/bowling_ice_nut") is not None
+    assert assets.get_image("projectiles/fume_spore") is not None
+    assert assets.get_image("projectiles/jalapeno_fire") is not None
+
+    # Test alpha preservation in damage tinting (Fix for colored rectangle bug)
+    surf = pygame.Surface((32, 32), pygame.SRCALPHA)
+    surf.fill((0, 0, 0, 0))  # fully transparent
+    surf.fill((100, 200, 100, 255), rect=pygame.Rect(8, 8, 16, 16))  # opaque center
+
+    tinted = apply_tint(surf, (255, 60, 60))
+    # Corner pixel must STILL be 100% transparent (alpha == 0)
+    corner_alpha = tinted.get_at((0, 0)).a
+    assert corner_alpha == 0, f"Transparent pixel gained alpha: {corner_alpha}!"
+    # Center pixel must have been tinted and remain opaque
+    center_pixel = tinted.get_at((12, 12))
+    assert center_pixel.a == 255
+    assert center_pixel.r > 100  # Red boost from tint
+
+    print("  -> Assets & Alpha Tinting OK!")
 
 
 def test_savegame():
@@ -116,7 +173,7 @@ def test_grid_and_plants():
 
 
 def test_combat_mechanics():
-    print("Testing combat physics and zombie behaviors...")
+    print("Testing combat physics and plant/zombie behaviors...")
     ps = ParticleSystem()
     zombies = [NormalZombie(row=2, start_x=800.0)]
     projectiles = []
@@ -134,7 +191,7 @@ def test_combat_mechanics():
 
     # Simulate pea hitting normal zombie
     initial_z_hp = zombies[0].hp
-    pea.x = zombies[0].x  # move directly to zombie
+    pea.x = zombies[0].x
     assert pea.get_hitbox().colliderect(zombies[0].get_hitbox())
     zombies[0].take_damage(pea.damage)
     assert zombies[0].hp == initial_z_hp - pea.damage
@@ -151,19 +208,90 @@ def test_combat_mechanics():
     # Test Pole Vaulter jump
     pv_z = PoleVaulterZombie(row=0, start_x=450.0)
     wallnut = Wallnut(row=0, col=2)
-    wallnut.x = 400.0  # place plant ahead
+    wallnut.x = 400.0
     assert not pv_z.has_vaulted
-    # Update until vault triggers
     for _ in range(60):
         pv_z.update(0.02, [wallnut], ps)
     assert pv_z.is_vaulting or pv_z.has_vaulted
 
-    # Test Bowling ricochet
-    bowling_nut = BowlingNut(x=500.0, y=300.0, row=2)
-    bowling_nut.on_hit_zombie()
-    assert bowling_nut.row in (1, 3)
+    # Test Potato Mine arming & detonation
+    mine = PotatoMine(row=2, col=2)
+    assert not mine.is_armed
+    # Advance time until armed
+    for _ in range(350):
+        mine.update(0.05, zombies, projectiles, suns, ps)
+    assert mine.is_armed
+    # Zombie walks over armed mine
+    zombies[0].x = mine.x
+    mine.update(0.05, zombies, projectiles, suns, ps)
+    assert not mine.is_alive  # Exploded!
+    assert not zombies[0].is_alive  # Zombie blown up!
+
+    # Test Repeater double shot
+    repeater = Repeater(row=3, col=0)
+    r_zombies = [NormalZombie(row=3, start_x=700.0)]
+    r_projs = []
+    for _ in range(120):
+        repeater.update(0.016, r_zombies, r_projs, suns, ps)
+    assert len(r_projs) >= 2  # Fired pea pair
+
+    # Test Jalapeno line flame
+    jalapeno = Jalapeno(row=4, col=1)
+    j_projs = []
+    for _ in range(120):
+        jalapeno.update(0.016, [], j_projs, suns, ps)
+    assert any(isinstance(p, JalapenoFlame) for p in j_projs)
+
+    # Test Disco Zombie summoning dancers
+    disco = DiscoZombie(row=2, start_x=600.0)
+    dancers = []
+    disco.summon_timer = 20.0  # trigger summon (interval is 14.0s)
+    disco.update(0.1, [], ps, spawned_zombies_list=dancers)
+    assert len(dancers) > 0, "Disco zombie failed to summon backup dancers"
 
     print("  -> Combat & Zombie mechanics OK!")
+
+
+def test_bowling_mechanics():
+    print("Testing Wall-nut Bowling nut variants...")
+    ps = ParticleSystem()
+
+    # 1. Regular Nut Ricochet
+    dummy_z = NormalZombie(row=2, start_x=500.0)
+    all_z = [dummy_z]
+    bowling_nut = BowlingNut(x=500.0, y=300.0, row=2)
+    pts = bowling_nut.on_hit_zombie(dummy_z, ps, all_z)
+    assert pts == 100
+    assert bowling_nut.row in (1, 3)
+
+    # 2. Explosive Cherry Nut (3x3 massive blast)
+    cherry_nut = BowlingCherryNut(x=500.0, y=300.0, row=2)
+    z1 = NormalZombie(row=1, start_x=505.0)
+    z2 = NormalZombie(row=2, start_x=500.0)
+    z3 = NormalZombie(row=3, start_x=510.0)
+    z_cluster = [z1, z2, z3]
+    pts = cherry_nut.on_hit_zombie(z2, ps, z_cluster)
+    assert not cherry_nut.is_alive  # Exploded!
+    assert not z1.is_alive  # Obliterated!
+    assert not z2.is_alive  # Obliterated!
+    assert not z3.is_alive  # Obliterated!
+    assert pts >= 500  # Strike combo bonus!
+
+    # 3. Giant Nut (Steamroller)
+    giant_nut = BowlingGiantNut(x=400.0, y=300.0, row=2)
+    boss_z = Gargantuar(row=2, start_x=410.0)
+    pts = giant_nut.on_hit_zombie(boss_z, ps, [boss_z])
+    assert giant_nut.is_alive  # Keeps rolling!
+    assert not boss_z.is_alive  # Flattened by 9999 damage!
+
+    # 4. Ice Nut (Freeze slow)
+    ice_nut = BowlingIceNut(x=500.0, y=300.0, row=2)
+    target_z = FootballZombie(row=2, start_x=505.0)
+    pts = ice_nut.on_hit_zombie(target_z, ps, [target_z])
+    assert not ice_nut.is_alive
+    assert target_z.freeze_timer > 0  # Frozen!
+
+    print("  -> Bowling variants OK!")
 
 
 def test_scenes_and_simulation():
@@ -208,10 +336,11 @@ def test_scenes_and_simulation():
 
 
 def main():
-    test_assets()
+    test_assets_and_tinting()
     test_savegame()
     test_grid_and_plants()
     test_combat_mechanics()
+    test_bowling_mechanics()
     test_scenes_and_simulation()
     print("\nALL VERIFICATION TESTS PASSED SUCCESSFULLY! (100% OK)")
 

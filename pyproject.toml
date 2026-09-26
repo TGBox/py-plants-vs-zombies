@@ -7,7 +7,9 @@ authors = [
     { name = "Daniel Rösch", email = "droesch91@gmail.com" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "pygame-ce",
+]
 
 [project.scripts]
 py-plants-vs-zombies = "py_plants_vs_zombies:main"
